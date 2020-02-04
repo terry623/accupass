@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import { getCategories, getAttractions } from '../api';
 import Card from './Card';
-import { setCatagories, setAttractions } from '../states/actions';
+import { setCategories, setAttractions } from '../states/actions';
 
 import './Home.scss';
 
@@ -22,26 +22,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Home = ({
-  allCatagories,
-  setCatagories: setCatagoriesFromProps,
+  allCategories,
+  setCategories: setCategoriesFromProps,
   allAttractions,
   setAttractions: setAttractionsFromProps,
 }) => {
   const classes = useStyles();
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(-1);
-  const [currentPage, setcurrentPage] = useState(1);
   const [currentAttractions, setcurrentAttractions] = useState([]);
 
   useEffect(() => {
     async function fetchCategory() {
-      if (allCatagories.length === 0) {
-        const {
-          data: {
-            data: { Category },
-          },
-        } = await getCategories();
-
-        setCatagoriesFromProps(Category);
+      if (allCategories.length === 0) {
+        const data = await getCategories();
+        setCategoriesFromProps(data);
       }
       setCurrentCategoryIndex(0);
     }
@@ -52,17 +46,11 @@ const Home = ({
   useEffect(() => {
     if (currentCategoryIndex < 0) return;
     async function fetchAttractions() {
-      const { id } = allCatagories[currentCategoryIndex];
+      const { id } = allCategories[currentCategoryIndex];
       const attractions = allAttractions[id];
 
       if (!attractions) {
-        const {
-          data: { data },
-        } = await getAttractions({
-          categoryIds: id,
-          page: currentPage,
-        });
-
+        const data = await getAttractions(id);
         setAttractionsFromProps(id, data);
         setcurrentAttractions(data);
       } else {
@@ -96,19 +84,23 @@ const Home = ({
                 variant="scrollable"
                 scrollButtons="auto"
               >
-                {allCatagories.map(e => (
+                {allCategories.map(e => (
                   <Tab key={e.id} label={e.name} />
                 ))}
               </Tabs>
             </AppBar>
-            {allCatagories.map((e, i) => (
+            {allCategories.map((e, i) => (
               <Fragment key={e.id}>
                 {currentCategoryIndex === i && (
                   <div className="attractions">
                     {currentAttractions.length > 0 ? (
                       <Fragment>
                         {currentAttractions.map(attraction => (
-                          <Card key={attraction.id} attraction={attraction} />
+                          <Card
+                            key={attraction.id}
+                            attraction={attraction}
+                            category={allCategories[currentCategoryIndex].id}
+                          />
                         ))}
                       </Fragment>
                     ) : (
@@ -129,15 +121,15 @@ const Home = ({
 
 Home.propTypes = {
   allAttractions: PropTypes.object.isRequired,
-  allCatagories: PropTypes.array.isRequired,
+  allCategories: PropTypes.array.isRequired,
   setAttractions: PropTypes.func.isRequired,
-  setCatagories: PropTypes.func.isRequired,
+  setCategories: PropTypes.func.isRequired,
 };
 
 export default connect(
   state => ({
-    ...state.catagories,
+    ...state.categories,
     ...state.attractions,
   }),
-  { setCatagories, setAttractions }
+  { setCategories, setAttractions }
 )(Home);

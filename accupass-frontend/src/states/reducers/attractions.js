@@ -7,12 +7,12 @@ const initialState = {
 const attractions = (state = initialState, action) => {
   switch (action.type) {
     case SET_ATTRACTIONS: {
-      const { catagory, specificAttractions } = action.payload;
+      const { categories, specificAttractions } = action.payload;
       return {
         ...state,
         allAttractions: {
           ...state.allAttractions,
-          [catagory]: specificAttractions,
+          [categories]: specificAttractions,
         },
       };
     }

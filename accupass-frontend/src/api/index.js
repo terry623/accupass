@@ -9,15 +9,15 @@ export const getCategories = async () => {
   } catch (error) {
     console.error(error);
   }
-  return response;
+  return response.data.data.Category;
 };
 
-export const getAttractions = async ({ categoryIds, page }) => {
+export const getAttractions = async id => {
   let response = null;
   try {
-    response = await axios.get(`${baseUrl}/categories/${categoryIds}/${page}`);
+    response = await axios.get(`${baseUrl}/categories/${id}/1`);
   } catch (error) {
     console.error(error);
   }
-  return response;
+  return response.data.data;
 };

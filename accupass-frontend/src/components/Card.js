@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AttractionCard = ({ attraction }) => {
+const AttractionCard = ({ attraction, category }) => {
   const classes = useStyles();
   const [currentImage, setCurrentImage] = useState(noImage);
 
@@ -29,20 +30,23 @@ const AttractionCard = ({ attraction }) => {
   }, [attraction.images]);
 
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={currentImage} />
-        <CardContent>
-          <h2>{attraction.name}</h2>
-          <p>{attraction.address}</p>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <Link to={`/${attraction.id}?category=${category}`} target="_blank">
+      <Card className={classes.root}>
+        <CardActionArea>
+          <CardMedia className={classes.media} image={currentImage} />
+          <CardContent>
+            <h2>{attraction.name}</h2>
+            <p>{attraction.address}</p>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Link>
   );
 };
 
 AttractionCard.propTypes = {
   attraction: PropTypes.object.isRequired,
+  category: PropTypes.number.isRequired,
 };
 
 export default AttractionCard;

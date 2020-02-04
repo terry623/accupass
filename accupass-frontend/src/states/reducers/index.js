@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import catagories from './catagories';
+import categories from './categories';
 import attractions from './attractions';
 
 export default combineReducers({
-  catagories,
+  categories,
   attractions,
 });

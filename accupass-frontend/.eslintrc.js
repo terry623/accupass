@@ -30,6 +30,9 @@ module.exports = {
     'react/no-access-state-in-setstate': 'off',
     'react/jsx-wrap-multilines': 'off',
     'react/jsx-one-expression-per-line': 'off',
+    'no-restricted-syntax': 'off',
+    'guard-for-in': 'off',
+    'no-await-in-loop': 'off',
     'react/sort-prop-types': [
       'error',
       {

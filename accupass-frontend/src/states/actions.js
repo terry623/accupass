@@ -1,11 +1,11 @@
-import { SET_CATAGORIES, SET_ATTRACTIONS } from './actionTypes';
+import { SET_CATEGORIES, SET_ATTRACTIONS } from './actionTypes';
 
-export const setCatagories = allCatagories => ({
-  type: SET_CATAGORIES,
-  payload: { allCatagories },
+export const setCategories = allCategories => ({
+  type: SET_CATEGORIES,
+  payload: { allCategories },
 });
 
-export const setAttractions = (catagory, specificAttractions) => ({
+export const setAttractions = (categories, specificAttractions) => ({
   type: SET_ATTRACTIONS,
-  payload: { catagory, specificAttractions },
+  payload: { categories, specificAttractions },
 });
