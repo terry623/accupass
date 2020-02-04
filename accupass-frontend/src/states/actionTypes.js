@@ -1,0 +1,2 @@
+export const SET_CATAGORIES = 'SET_CATAGORIES';
+export const SET_ATTRACTIONS = 'SET_ATTRACTIONS';
