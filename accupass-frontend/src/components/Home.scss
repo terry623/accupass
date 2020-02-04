@@ -1,0 +1,21 @@
+.Home {
+  .loading {
+    text-align: center;
+    margin-top: 100px;
+  }
+
+  .progress {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 80px;
+  }
+  .attractions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .MuiCardContent-root {
+    height: 100px;
+  }
+}

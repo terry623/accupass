@@ -29,6 +29,7 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/jsx-wrap-multilines': 'off',
+    'react/jsx-one-expression-per-line': 'off',
     'react/sort-prop-types': [
       'error',
       {
