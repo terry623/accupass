@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
 
 import { getCategories, getAttractions } from '../api';
-import noImage from '../assets/noImage.jpg';
+
+import './AttractionInfo.scss';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -58,32 +62,45 @@ const AttractionInfo = () => {
           <h2>Loading ......</h2>
         </div>
       ) : (
-        <div>
-          {info.images[0] ? (
-            <img src={info.images[0].src} alt="" />
-          ) : (
-            <img src={noImage} alt="" />
-          )}
-          <h3>{info.name}</h3>
-          <p>{info.address}</p>
-          <br />
-          <div>介紹</div>
-          <div>{info.introduction}</div>
-          <br />
-          <div>聯絡資訊</div>
-          <div>{info.tel}</div>
-          <div>{info.email}</div>
-          <div>{info.offical_site}</div>
-          <br />
-          <div>類別</div>
-          <div>
-            {info.category.map(e => (
-              <div key={e.id}>{e.name}</div>
-            ))}
-          </div>
-          <br />
-          <div>查看更多</div>
-          <div>{info.url}</div>
+        <div className="main">
+          <Paper elevation={3}>
+            {info.images[0] && <img src={info.images[0].src} alt="" />}
+            <div className="info">
+              <div>
+                <h3>{info.name}</h3>
+                <p>{info.address}</p>
+              </div>
+              <div className="infoArea">
+                <h4>介紹</h4>
+                <p>{info.introduction}</p>
+              </div>
+              <div className="infoArea">
+                <h4>聯絡資訊</h4>
+                <p>電話 : {info.tel || '無'}</p>
+                <p>電子郵件 : {info.email || '無'} </p>
+                <p>官方網站 : {info.offical_site || '無'}</p>
+              </div>
+              <div className="infoArea">
+                <h4>類別</h4>
+                {info.category.map(e => (
+                  <Chip
+                    key={e.id}
+                    label={e.name}
+                    size="small"
+                    variant="outlined"
+                  />
+                ))}
+              </div>
+              <div className="infoArea">
+                <h4>查看更多</h4>
+                <p>
+                  <Link href={info.url} color="inherit" target="_blank">
+                    {info.url}
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </Paper>
         </div>
       )}
     </div>

@@ -1,0 +1,22 @@
+.AttractionInfo {
+  .main {
+    width: 60%;
+    margin: 50px auto;
+
+    img {
+      width: 100%;
+    }
+
+    .info {
+      padding: 30px;
+
+      .infoArea {
+        margin-top: 50px;
+
+        .MuiChip-outlined {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
