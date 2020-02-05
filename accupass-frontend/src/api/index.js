@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8080/';
+const baseUrl = 'http://localhost:8080';
 
 export const getCategories = async () => {
   let response = null;

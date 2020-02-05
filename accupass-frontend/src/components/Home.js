@@ -66,6 +66,31 @@ const Home = ({
     setCurrentCategoryIndex(newValue);
   };
 
+  const displayAttractions = () =>
+    allCategories.map((e, i) => (
+      <Fragment key={e.id}>
+        {currentCategoryIndex === i && (
+          <Fragment>
+            {currentAttractions.length > 0 ? (
+              <div className="attractions">
+                {currentAttractions.map(attraction => (
+                  <AttractionCard
+                    key={attraction.id}
+                    attraction={attraction}
+                    category={allCategories[currentCategoryIndex].id}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="progress">
+                <CircularProgress />
+              </div>
+            )}
+          </Fragment>
+        )}
+      </Fragment>
+    ));
+
   return (
     <div className="Home">
       <div className={classes.root}>
@@ -89,29 +114,7 @@ const Home = ({
                 ))}
               </Tabs>
             </AppBar>
-            {allCategories.map((e, i) => (
-              <Fragment key={e.id}>
-                {currentCategoryIndex === i && (
-                  <div className="attractions">
-                    {currentAttractions.length > 0 ? (
-                      <Fragment>
-                        {currentAttractions.map(attraction => (
-                          <AttractionCard
-                            key={attraction.id}
-                            attraction={attraction}
-                            category={allCategories[currentCategoryIndex].id}
-                          />
-                        ))}
-                      </Fragment>
-                    ) : (
-                      <div className="progress">
-                        <CircularProgress />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Fragment>
-            ))}
+            {displayAttractions()}
           </Fragment>
         )}
       </div>

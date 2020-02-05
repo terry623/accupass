@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 
 import { getCategories, getAttractions } from '../api';
+import noImage from '../assets/noImage.jpg';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -9,11 +10,13 @@ function useQuery() {
 
 const AttractionInfo = () => {
   const [info, setInfo] = useState({});
+
   let { id } = useParams();
+  const history = useHistory();
   const queryCategory = useQuery().get('category');
   id = parseInt(id, 10);
 
-  const search = async targetCategory => {
+  const searchAttractionByCategory = async targetCategory => {
     const attractions = await getAttractions(targetCategory);
     const result = attractions.find(e => e.id === id);
     return result;
@@ -21,9 +24,9 @@ const AttractionInfo = () => {
 
   // 實務上若遇到此情況，會與後端溝通 API => 使用單一 id 查景點資訊
   useEffect(() => {
-    async function fetchCategory() {
+    async function fetchAttraction() {
       if (queryCategory) {
-        const result = await search(queryCategory);
+        const result = await searchAttractionByCategory(queryCategory);
         if (result) {
           setInfo(result);
           return;
@@ -34,15 +37,18 @@ const AttractionInfo = () => {
       console.log('Searching...');
       const categories = await getCategories();
       for (const c of categories) {
-        const result = await search(c.id);
+        const result = await searchAttractionByCategory(c.id);
         if (result) {
           setInfo(result);
           return;
         }
       }
+
+      // 都沒有則返回首頁
+      history.push('/');
     }
 
-    fetchCategory();
+    fetchAttraction();
   }, []);
 
   return (
@@ -52,7 +58,33 @@ const AttractionInfo = () => {
           <h2>Loading ......</h2>
         </div>
       ) : (
-        <div>{info.name}</div>
+        <div>
+          {info.images[0] ? (
+            <img src={info.images[0].src} alt="" />
+          ) : (
+            <img src={noImage} alt="" />
+          )}
+          <h3>{info.name}</h3>
+          <p>{info.address}</p>
+          <br />
+          <div>介紹</div>
+          <div>{info.introduction}</div>
+          <br />
+          <div>聯絡資訊</div>
+          <div>{info.tel}</div>
+          <div>{info.email}</div>
+          <div>{info.offical_site}</div>
+          <br />
+          <div>類別</div>
+          <div>
+            {info.category.map(e => (
+              <div key={e.id}>{e.name}</div>
+            ))}
+          </div>
+          <br />
+          <div>查看更多</div>
+          <div>{info.url}</div>
+        </div>
       )}
     </div>
   );

@@ -12,6 +12,7 @@ import noImage from '../assets/noImage.jpg';
 const useStyles = makeStyles({
   root: {
     maxWidth: 300,
+    margin: 'auto',
   },
   media: {
     width: 300,
@@ -24,13 +25,16 @@ const AttractionCard = ({ attraction, category }) => {
   const [currentImage, setCurrentImage] = useState(noImage);
 
   useEffect(() => {
-    const img =
-      attraction.images[Math.floor(Math.random() * attraction.images.length)];
+    const img = attraction.images[0];
     if (img) setCurrentImage(img.src);
   }, [attraction.images]);
 
   return (
-    <Link to={`/${attraction.id}?category=${category}`} target="_blank">
+    <Link
+      to={`/${attraction.id}?category=${category}`}
+      target="_blank"
+      className="link"
+    >
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia className={classes.media} image={currentImage} />
