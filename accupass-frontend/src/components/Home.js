@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 
 import { getCategories, getAttractions } from '../api';
-import Card from './Card';
+import AttractionCard from './AttractionCard';
 import { setCategories, setAttractions } from '../states/actions';
 
 import './Home.scss';
@@ -96,7 +96,7 @@ const Home = ({
                     {currentAttractions.length > 0 ? (
                       <Fragment>
                         {currentAttractions.map(attraction => (
-                          <Card
+                          <AttractionCard
                             key={attraction.id}
                             attraction={attraction}
                             category={allCategories[currentCategoryIndex].id}

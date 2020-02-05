@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://accupass-backend.now.sh';
+const baseUrl = 'http://localhost:8080/';
 
 export const getCategories = async () => {
   let response = null;
