@@ -13,12 +13,14 @@ app.use(logger());
 
 router.get('/categories', async ctx => {
   const { data } = await api.getCategories();
+  ctx.set('Cache-Control', 'max-age=31536000');
   ctx.body = JSON.stringify(data || {});
 });
 
 router.get('/categories/:categoryIds/:page', async ctx => {
   const { categoryIds, page } = ctx.params;
   const { data } = await api.getAttractions({ categoryIds, page });
+  ctx.set('Cache-Control', 'max-age=31536000');
   ctx.body = JSON.stringify(data || {});
 });
 

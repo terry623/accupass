@@ -1,19 +1,16 @@
-import { SET_ATTRACTIONS } from '../actionTypes';
+import { ADD_FAVORITE_ATTRACTION } from '../actionTypes';
 
 const initialState = {
-  allAttractions: {},
+  favoriteAttractions: [],
 };
 
 const attractions = (state = initialState, action) => {
   switch (action.type) {
-    case SET_ATTRACTIONS: {
-      const { categories, specificAttractions } = action.payload;
+    case ADD_FAVORITE_ATTRACTION: {
+      const { id } = action.payload;
       return {
         ...state,
-        allAttractions: {
-          ...state.allAttractions,
-          [categories]: specificAttractions,
-        },
+        favoriteAttractions: [...state.favoriteAttractions, id],
       };
     }
     default:
