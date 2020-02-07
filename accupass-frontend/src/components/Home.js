@@ -1,35 +1,30 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 
-import { getCategories, getAttractions } from '../api';
 import AttractionCard from './AttractionCard';
-import { setCategories } from '../states/actions';
+import { getAttractions } from '../states/actions/attractions';
+import { getCategories } from '../states/actions/categories';
 
 import './Home.scss';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
-  const classes = useStyles();
+const Home = ({
+  categoriesLoading,
+  attractionsLoading,
+  allCategories,
+  getCategories: getCategoriesFromProps,
+  getAttractions: getAttractionsFromProps,
+}) => {
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(-1);
   const [currentAttractions, setcurrentAttractions] = useState([]);
 
   useEffect(() => {
     async function fetchCategory() {
-      const data = await getCategories();
-      setCategoriesFromProps(data);
+      await getCategoriesFromProps();
       setCurrentCategoryIndex(0);
     }
 
@@ -39,8 +34,8 @@ const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
   useEffect(() => {
     if (currentCategoryIndex < 0) return;
     async function fetchAttractions() {
-      const { id } = allCategories[currentCategoryIndex];
-      const data = await getAttractions(id);
+      const { id: categoryId } = allCategories[currentCategoryIndex];
+      const data = await getAttractionsFromProps(categoryId);
       setcurrentAttractions(data);
     }
 
@@ -57,7 +52,11 @@ const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
       <Fragment key={e.id}>
         {currentCategoryIndex === i && (
           <Fragment>
-            {currentAttractions.length > 0 ? (
+            {attractionsLoading ? (
+              <div className="progress">
+                <CircularProgress />
+              </div>
+            ) : (
               <div className="attractions">
                 {currentAttractions.map(attraction => (
                   <AttractionCard
@@ -67,10 +66,6 @@ const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
                   />
                 ))}
               </div>
-            ) : (
-              <div className="progress">
-                <CircularProgress />
-              </div>
             )}
           </Fragment>
         )}
@@ -79,14 +74,14 @@ const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
 
   return (
     <div className="Home">
-      <div className={classes.root}>
-        {currentCategoryIndex < 0 ? (
-          <div className="loading">
-            <h2>Loading ......</h2>
-          </div>
-        ) : (
-          <Fragment>
-            <AppBar position="static" color="default">
+      {categoriesLoading ? (
+        <div className="loading">
+          <h2>Loading ......</h2>
+        </div>
+      ) : (
+        <Fragment>
+          <AppBar position="static" color="default">
+            {currentCategoryIndex > -1 && (
               <Tabs
                 value={currentCategoryIndex}
                 onChange={handleChange}
@@ -99,23 +94,27 @@ const Home = ({ allCategories, setCategories: setCategoriesFromProps }) => {
                   <Tab key={e.id} label={e.name} />
                 ))}
               </Tabs>
-            </AppBar>
-            {displayAttractions()}
-          </Fragment>
-        )}
-      </div>
+            )}
+          </AppBar>
+          {displayAttractions()}
+        </Fragment>
+      )}
     </div>
   );
 };
 
 Home.propTypes = {
   allCategories: PropTypes.array.isRequired,
-  setCategories: PropTypes.func.isRequired,
+  attractionsLoading: PropTypes.bool.isRequired,
+  categoriesLoading: PropTypes.bool.isRequired,
+  getAttractions: PropTypes.func.isRequired,
+  getCategories: PropTypes.func.isRequired,
 };
 
 export default connect(
   state => ({
+    ...state.attractions,
     ...state.categories,
   }),
-  { setCategories }
+  { getCategories, getAttractions }
 )(Home);

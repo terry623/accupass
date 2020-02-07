@@ -15,14 +15,13 @@ function useQuery() {
 const AttractionInfo = () => {
   const [info, setInfo] = useState({});
 
-  let { id } = useParams();
   const history = useHistory();
   const queryCategory = useQuery().get('category');
-  id = parseInt(id, 10);
+  const attractionId = parseInt(useParams().id, 10);
 
   const searchAttractionByCategory = async targetCategory => {
     const attractions = await getAttractions(targetCategory);
-    const result = attractions.find(e => e.id === id);
+    const result = attractions.find(e => e.id === attractionId);
     return result;
   };
 
@@ -38,7 +37,7 @@ const AttractionInfo = () => {
       }
 
       // 類別若為錯誤，或者無提供，都會重頭開始搜尋
-      console.log('Searching...');
+      console.log('Searching Attraction...');
       const categories = await getCategories();
       for (const c of categories) {
         const result = await searchAttractionByCategory(c.id);
