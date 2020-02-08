@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AttractionCard = ({ attraction, category }) => {
+const AttractionCard = ({ attraction, categoryId }) => {
   const classes = useStyles();
   const [currentImage, setCurrentImage] = useState(noImage);
 
@@ -36,7 +36,7 @@ const AttractionCard = ({ attraction, category }) => {
   return (
     <Card className={classes.root}>
       <Link
-        to={`/${attraction.id}?category=${category}`}
+        to={`/${attraction.id}?category=${categoryId}`}
         target="_blank"
         className="link"
       >
@@ -68,7 +68,7 @@ const AttractionCard = ({ attraction, category }) => {
 
 AttractionCard.propTypes = {
   attraction: PropTypes.object.isRequired,
-  category: PropTypes.number.isRequired,
+  categoryId: PropTypes.number.isRequired,
 };
 
 export default AttractionCard;

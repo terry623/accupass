@@ -18,11 +18,11 @@ const endLoadingAttractions = () => ({
 //   payload: { category, attraction },
 // });
 
-export function getAttractions() {
+export function getAttractions(categoryId) {
   return dispatch => {
     dispatch(startLoadingAttractions());
 
-    return getAttractionsFromApi()
+    return getAttractionsFromApi(categoryId)
       .then(attractions => {
         dispatch(endLoadingAttractions());
         return attractions;

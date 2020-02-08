@@ -6,7 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 
-import AttractionCard from './AttractionCard';
+import Attractions from './Attractions';
 import { getAttractions } from '../states/actions/attractions';
 import { getCategories } from '../states/actions/categories';
 
@@ -57,15 +57,11 @@ const Home = ({
                 <CircularProgress />
               </div>
             ) : (
-              <div className="attractions">
-                {currentAttractions.map(attraction => (
-                  <AttractionCard
-                    key={attraction.id}
-                    attraction={attraction}
-                    category={allCategories[currentCategoryIndex].id}
-                  />
-                ))}
-              </div>
+              <Attractions
+                currentAttractions={currentAttractions}
+                setcurrentAttractions={setcurrentAttractions}
+                categoryId={allCategories[currentCategoryIndex].id}
+              />
             )}
           </Fragment>
         )}
@@ -80,7 +76,7 @@ const Home = ({
         </div>
       ) : (
         <Fragment>
-          <AppBar position="static" color="default">
+          <AppBar color="default">
             {currentCategoryIndex > -1 && (
               <Tabs
                 value={currentCategoryIndex}

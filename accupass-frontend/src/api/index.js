@@ -12,10 +12,10 @@ export const getCategories = async () => {
   return response.data.data.Category;
 };
 
-export const getAttractions = async id => {
+export const getAttractions = async (categoryId, page = 1) => {
   let response = null;
   try {
-    response = await axios.get(`${baseUrl}/categories/${id}/1`);
+    response = await axios.get(`${baseUrl}/categories/${categoryId}/${page}`);
   } catch (error) {
     console.error(error);
   }

@@ -4,7 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import Link from '@material-ui/core/Link';
 
-import { getCategories, getAttractions } from '../api';
+import { getCategories } from '../api';
+import { searchAttractionByCategory } from '../utilities';
 
 import './AttractionInfo.scss';
 
@@ -15,21 +16,18 @@ function useQuery() {
 const AttractionInfo = () => {
   const [info, setInfo] = useState({});
 
-  const history = useHistory();
-  const queryCategory = useQuery().get('category');
   const attractionId = parseInt(useParams().id, 10);
-
-  const searchAttractionByCategory = async targetCategory => {
-    const attractions = await getAttractions(targetCategory);
-    const result = attractions.find(e => e.id === attractionId);
-    return result;
-  };
+  const queryCategoryId = useQuery().get('category');
+  const history = useHistory();
 
   // 實務上若遇到此情況，會與後端溝通 API => 使用單一 id 查景點資訊
   useEffect(() => {
     async function fetchAttraction() {
-      if (queryCategory) {
-        const result = await searchAttractionByCategory(queryCategory);
+      if (queryCategoryId) {
+        const result = await searchAttractionByCategory(
+          attractionId,
+          queryCategoryId
+        );
         if (result) {
           setInfo(result);
           return;
@@ -39,8 +37,11 @@ const AttractionInfo = () => {
       // 類別若為錯誤，或者無提供，都會重頭開始搜尋
       console.log('Searching Attraction...');
       const categories = await getCategories();
-      for (const c of categories) {
-        const result = await searchAttractionByCategory(c.id);
+      for (const category of categories) {
+        const result = await searchAttractionByCategory(
+          attractionId,
+          category.id
+        );
         if (result) {
           setInfo(result);
           return;
