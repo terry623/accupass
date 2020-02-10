@@ -1,7 +1,8 @@
 # Accupass
 
+此為應徵 Accupass 的 Front-end Engineer 作業
+
 ## Introduction
-此為應徵 [ Accupass 活動通 ] Front-end Engineer 的作業
 
 基本
 1. 進入首頁後，可看到 Header 有各種景點分類
