@@ -6,7 +6,7 @@ import ClipboardJS from 'clipboard';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AttractionCard from './AttractionCard';
-import { getAttractions } from '../api';
+import { getAttractions } from '../../api';
 
 const Attractions = ({
   currentAttractions,

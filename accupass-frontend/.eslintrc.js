@@ -34,6 +34,7 @@ module.exports = {
     'guard-for-in': 'off',
     'no-await-in-loop': 'off',
     'no-new': 'off',
+    'jsx-a11y/accessible-emoji': 'off',
     'react/sort-prop-types': [
       'error',
       {

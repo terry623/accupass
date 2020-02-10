@@ -9,12 +9,10 @@ import { searchAttractionByCategory } from '../utilities';
 
 import './AttractionInfo.scss';
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+const useQuery = () => new URLSearchParams(useLocation().search);
 
 const AttractionInfo = () => {
-  const [info, setInfo] = useState({});
+  const [info, setInfo] = useState(undefined);
 
   const attractionId = parseInt(useParams().id, 10);
   const queryCategoryId = useQuery().get('category');
@@ -35,7 +33,7 @@ const AttractionInfo = () => {
       }
 
       // 類別若為錯誤，或者無提供，都會重頭開始搜尋
-      console.log('Searching Attraction...');
+      console.log('Searching From Beginning...');
       const categories = await getCategories();
       for (const category of categories) {
         const result = await searchAttractionByCategory(
@@ -48,7 +46,7 @@ const AttractionInfo = () => {
         }
       }
 
-      // 都沒有則返回首頁
+      // 都沒有結果則返回首頁
       history.push('/');
     }
 
@@ -56,12 +54,12 @@ const AttractionInfo = () => {
   }, []);
 
   useEffect(() => {
-    if (info.name) document.title = info.name;
+    if (info) document.title = info.name;
   }, [info]);
 
   return (
     <div className="AttractionInfo">
-      {Object.keys(info).length === 0 ? (
+      {!info ? (
         <div className="loading">
           <h2>Loading ......</h2>
         </div>

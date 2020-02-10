@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import {
   addFavoriteAttraction,
   removeFavoriteAttraction,
-} from '../states/actions/attractions';
+} from '../../states/actions/attractions';
 
 const FavoriteActionIcon = ({
   categoryId,
@@ -27,7 +27,9 @@ const FavoriteActionIcon = ({
         attraction,
       });
     } else {
-      removeFavoriteAttractionFromProps({ attractionId: attraction.id });
+      removeFavoriteAttractionFromProps({
+        attractionId: attraction.id,
+      });
     }
   };
 

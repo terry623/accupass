@@ -1,16 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 import Fab from '@material-ui/core/Fab';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import { connect } from 'react-redux';
 
-import Attractions from './Attractions';
-import Drawer from './Drawer';
+import Attractions from './other/Attractions';
+import Drawer from './other/Drawer';
 import { getAttractions } from '../states/actions/attractions';
 import { getCategories } from '../states/actions/categories';
 
@@ -27,15 +26,14 @@ const Home = ({
   const [currentAttractions, setCurrentAttractions] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const toggleDrawer = open => event => {
-    if (
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
-    }
-
+  const toggleDrawer = open => e => {
+    if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) return;
     setIsDrawerOpen(open);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentAttractions([]);
+    setCurrentCategoryIndex(newValue);
   };
 
   useEffect(() => {
@@ -57,11 +55,6 @@ const Home = ({
 
     fetchAttractions();
   }, [currentCategoryIndex]);
-
-  const handleChange = (event, newValue) => {
-    setCurrentAttractions([]);
-    setCurrentCategoryIndex(newValue);
-  };
 
   const displayAttractions = () =>
     allCategories.map((e, i) => (
@@ -96,7 +89,7 @@ const Home = ({
             {currentCategoryIndex > -1 && (
               <Tabs
                 value={currentCategoryIndex}
-                onChange={handleChange}
+                onChange={handleTabChange}
                 indicatorColor="primary"
                 textColor="primary"
                 variant="scrollable"
