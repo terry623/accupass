@@ -2,8 +2,8 @@
   .progress {
     text-align: center;
     width: 100%;
-    margin-top: 100px;
-    margin-bottom: 80px;
+    margin-top: 80px;
+    margin-bottom: 60px;
   }
 
   .attractions {
@@ -14,11 +14,17 @@
     max-width: 1366px;
   }
 
+  .toggleDrawerButton {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+  }
+
   .MuiCardContent-root {
     height: 100px;
   }
+}
 
-  .MuiButtonBase-root {
-    color: initial;
-  }
+.Home::-webkit-scrollbar {
+  width: 0 !important;
 }

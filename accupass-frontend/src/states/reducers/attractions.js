@@ -2,6 +2,7 @@ import {
   START_LOADING_ATTRACTIONS,
   END_LOADING_ATTRACTIONS,
   ADD_FAVORITE_ATTRACTION,
+  REMOVE_FAVORITE_ATTRACTION,
 } from '../actionTypes';
 
 const initialState = {
@@ -22,10 +23,24 @@ const attractions = (state = initialState, action) => {
         attractionsLoading: false,
       };
     case ADD_FAVORITE_ATTRACTION: {
-      const { id } = action.payload;
+      const { categoryId, attraction } = action.payload;
       return {
         ...state,
-        favoriteAttractions: [...state.favoriteAttractions, id],
+        favoriteAttractions: [
+          ...state.favoriteAttractions,
+          { id: attraction.id, attraction, categoryId },
+        ],
+      };
+    }
+    case REMOVE_FAVORITE_ATTRACTION: {
+      const { attractionId } = action.payload;
+      return {
+        ...state,
+        favoriteAttractions: [
+          ...state.favoriteAttractions.filter(
+            attraction => attraction.id !== attractionId
+          ),
+        ],
       };
     }
     default:

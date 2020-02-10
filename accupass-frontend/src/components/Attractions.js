@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
+import LazyLoad from 'react-lazyload';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AttractionCard from './AttractionCard';
@@ -8,7 +9,7 @@ import { getAttractions } from '../api';
 
 const Attractions = ({
   currentAttractions,
-  setcurrentAttractions,
+  setCurrentAttractions,
   categoryId,
 }) => {
   const [hasMore, setHasMore] = useState(true);
@@ -21,10 +22,8 @@ const Attractions = ({
     const remainAttractions = await getAttractions(categoryId, nextPage);
     setCurrentPage(nextPage);
 
-    console.log({ remainAttractions });
-
     if (remainAttractions && remainAttractions.length === 0) setHasMore(false);
-    else setcurrentAttractions([...currentAttractions, ...remainAttractions]);
+    else setCurrentAttractions([...currentAttractions, ...remainAttractions]);
   };
 
   return (
@@ -39,11 +38,9 @@ const Attractions = ({
     >
       <div className="attractions">
         {currentAttractions.map(attraction => (
-          <AttractionCard
-            key={attraction.id}
-            attraction={attraction}
-            categoryId={categoryId}
-          />
+          <LazyLoad key={attraction.id} height={300}>
+            <AttractionCard attraction={attraction} categoryId={categoryId} />
+          </LazyLoad>
         ))}
       </div>
     </InfiniteScroll>
@@ -53,7 +50,7 @@ const Attractions = ({
 Attractions.propTypes = {
   categoryId: PropTypes.number.isRequired,
   currentAttractions: PropTypes.array.isRequired,
-  setcurrentAttractions: PropTypes.func.isRequired,
+  setCurrentAttractions: PropTypes.func.isRequired,
 };
 
 export default Attractions;

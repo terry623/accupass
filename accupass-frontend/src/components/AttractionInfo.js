@@ -55,6 +55,10 @@ const AttractionInfo = () => {
     fetchAttraction();
   }, []);
 
+  useEffect(() => {
+    if (info.name) document.title = info.name;
+  }, [info]);
+
   return (
     <div className="AttractionInfo">
       {Object.keys(info).length === 0 ? (

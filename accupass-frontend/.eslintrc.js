@@ -33,6 +33,7 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'guard-for-in': 'off',
     'no-await-in-loop': 'off',
+    'no-new': 'off',
     'react/sort-prop-types': [
       'error',
       {

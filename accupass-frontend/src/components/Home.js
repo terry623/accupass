@@ -1,12 +1,16 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+import Fab from '@material-ui/core/Fab';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 
 import Attractions from './Attractions';
+import Drawer from './Drawer';
 import { getAttractions } from '../states/actions/attractions';
 import { getCategories } from '../states/actions/categories';
 
@@ -20,7 +24,19 @@ const Home = ({
   getAttractions: getAttractionsFromProps,
 }) => {
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(-1);
-  const [currentAttractions, setcurrentAttractions] = useState([]);
+  const [currentAttractions, setCurrentAttractions] = useState([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleDrawer = open => event => {
+    if (
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setIsDrawerOpen(open);
+  };
 
   useEffect(() => {
     async function fetchCategory() {
@@ -36,14 +52,14 @@ const Home = ({
     async function fetchAttractions() {
       const { id: categoryId } = allCategories[currentCategoryIndex];
       const data = await getAttractionsFromProps(categoryId);
-      setcurrentAttractions(data);
+      setCurrentAttractions(data);
     }
 
     fetchAttractions();
   }, [currentCategoryIndex]);
 
   const handleChange = (event, newValue) => {
-    setcurrentAttractions([]);
+    setCurrentAttractions([]);
     setCurrentCategoryIndex(newValue);
   };
 
@@ -59,7 +75,7 @@ const Home = ({
             ) : (
               <Attractions
                 currentAttractions={currentAttractions}
-                setcurrentAttractions={setcurrentAttractions}
+                setCurrentAttractions={setCurrentAttractions}
                 categoryId={allCategories[currentCategoryIndex].id}
               />
             )}
@@ -95,6 +111,14 @@ const Home = ({
           {displayAttractions()}
         </Fragment>
       )}
+      <Fab
+        color="secondary"
+        className="toggleDrawerButton"
+        onClick={toggleDrawer(true)}
+      >
+        <FavoriteIcon />
+      </Fab>
+      <Drawer isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import {
   START_LOADING_ATTRACTIONS,
   END_LOADING_ATTRACTIONS,
-  // ADD_FAVORITE_ATTRACTION,
+  ADD_FAVORITE_ATTRACTION,
+  REMOVE_FAVORITE_ATTRACTION,
 } from '../actionTypes';
 import { getAttractions as getAttractionsFromApi } from '../../api';
 
@@ -13,10 +14,15 @@ const endLoadingAttractions = () => ({
   type: END_LOADING_ATTRACTIONS,
 });
 
-// const addFavoriteAttraction = ({ category, attraction }) => ({
-//   type: ADD_FAVORITE_ATTRACTION,
-//   payload: { category, attraction },
-// });
+export const addFavoriteAttraction = ({ categoryId, attraction }) => ({
+  type: ADD_FAVORITE_ATTRACTION,
+  payload: { categoryId, attraction },
+});
+
+export const removeFavoriteAttraction = ({ attractionId }) => ({
+  type: REMOVE_FAVORITE_ATTRACTION,
+  payload: { attractionId },
+});
 
 export function getAttractions(categoryId) {
   return dispatch => {
